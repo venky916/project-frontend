@@ -23,7 +23,7 @@
 <script>
 import axios from 'axios';
 import Navbar from '@/components/Navbar.vue';
-
+const Api='https://backend-app-ygah.onrender.com/api/'
 export default {
   name: 'register',
   components: {
@@ -43,7 +43,7 @@ export default {
       // Upon successful registration, store the token in localStorage and redirect to home page
       // (Note: You should replace the API_URL with your actual API endpoint)
       axios
-        .post('http://127.0.0.1:8000/api/register/', {
+        .post(`${Api}register/`, {
           username: this.username,
           email: this.email,
           password: this.password,

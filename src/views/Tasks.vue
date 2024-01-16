@@ -26,7 +26,7 @@
 import Header from '@/components/Header.vue';
 import Sidebar from '@/components/Sidebar.vue';
 import axios from 'axios';
-
+const Api='https://backend-app-ygah.onrender.com/api/'
 export default {
   components: {
     Header,
@@ -44,7 +44,7 @@ export default {
 
     // Fetch user details
     axios
-      .get(`http://127.0.0.1:8000/api/user/`, {
+      .get(`${Api}user/`, {
         headers: { Authorization: `Token ${token}` },
       })
       .then(response => {
@@ -56,7 +56,7 @@ export default {
 
     // Fetch all apps
     axios
-      .get(`http://127.0.0.1:8000/api/app/`, {
+      .get(`${Api}app/`, {
         headers: { Authorization: `Token ${token}` },
       })
       .then(response => {
@@ -68,7 +68,7 @@ export default {
 
     // Fetch user's downloaded apps
     axios
-      .get(`http://127.0.0.1:8000/api/user/apps/`, {
+      .get(`${Api}user/apps/`, {
         headers: { Authorization: `Token ${token}` },
       })
       .then(response => {

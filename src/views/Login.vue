@@ -17,6 +17,7 @@
 <script>
 import Navbar from '@/components/Navbar.vue';
 import axios from 'axios';
+const Api='https://backend-app-ygah.onrender.com/api/'
 
 export default {
   name:"login",
@@ -34,7 +35,7 @@ export default {
       // Use Axios to perform login request with Knox token authentication
       // Upon successful login, store the token in localStorage and redirect to home page
       // (Note: You should replace the API_URL with your actual API endpoint)
-      axios.post('http://127.0.0.1:8000/api/login/', { username: this.username, password: this.password })
+      axios.post(`${Api}login/`, { username: this.username, password: this.password })
         .then(response => {
           localStorage.setItem('token', response.data.token);
           console.log(response.data.token)

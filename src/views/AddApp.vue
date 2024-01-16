@@ -46,7 +46,7 @@
 import Header from '@/components/Header.vue';
 import Sidebar from '@/components/Sidebar.vue';
 import axios from 'axios';
-
+const Api='https://backend-app-ygah.onrender.com/api/'
 export default {
   components: {
     Header,
@@ -70,7 +70,7 @@ export default {
   methods: {
     fetchUserDetails() {
       const token = localStorage.getItem('token');
-      axios.get('http://127.0.0.1:8000/api/user/', { headers: { Authorization: `Token ${token}` } })
+      axios.get(`${Api}user/`, { headers: { Authorization: `Token ${token}` } })
         .then(response => {
           this.username = response.data.username;
           this.is_admin = response.data.is_admin;
@@ -95,7 +95,7 @@ export default {
 
       axios({
         method: 'post',
-        url: 'http://127.0.0.1:8000/api/app/',
+        url: `${Api}app/`,
         data: formData,
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -123,16 +123,18 @@ export default {
 }
 
 .upload-area {
-  border: 2px dashed #ccc;
+  border: 2px dashed aqua;
   padding: 20px;
   text-align: center;
-  position: relative;
+  /* position: relative; */
 }
 
 .default-background {
-  background-image: url('/public/images/test.jpg'); /* Provide the correct path to your default image */
+  background-image: url('/public/images/drag-drop.png'); /* Provide the correct path to your default image */
+  background-size: 100% 100%;
   background-size: cover;
-  height: 200px;
+  background-position: center center;
+  height: 100px;
   border-radius: 50%; /* Border radius to make it circular */
 }
 

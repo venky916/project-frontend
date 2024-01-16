@@ -17,7 +17,6 @@
             <div class="default-background">
               <p v-if="!selectedFileName" style="color: aqua;">Drag & Drop Image Here</p>
               <img v-else :src="selectfilePreview" alt="Preview" style="max-width: 200px; max-height: 200px;" />
-           />
             </div>
             <button class="btn btn-secondary my-3" @click="posting">Submit</button>
           </div>
@@ -34,7 +33,7 @@
 import Header from '@/components/Header.vue';
 import Sidebar from '@/components/Sidebar.vue';
 import axios from 'axios';
-
+const Api='https://backend-app-ygah.onrender.com/api/'
 export default {
   components: {
     Header,
@@ -55,7 +54,7 @@ export default {
     const appId = this.$route.params.id;
     const token = localStorage.getItem('token');
 
-    axios.get(`http://127.0.0.1:8000/api/app/${appId}`, { headers: { Authorization: `Token ${token}` } })
+    axios.get(`${Api}app/${appId}`, { headers: { Authorization: `Token ${token}` } })
       .then(response => {
         this.app = response.data;
       })
@@ -63,7 +62,7 @@ export default {
         console.error('Failed to fetch app details', error);
       });
 
-    axios.get(`http://127.0.0.1:8000/api/user/`, { headers: { Authorization: `Token ${token}` } })
+    axios.get(`${Api}user/`, { headers: { Authorization: `Token ${token}` } })
       .then(response => {
         this.user = response.data.id;
         this.username = response.data.username;
@@ -87,7 +86,7 @@ export default {
       fd.append('app', this.app.id);
       fd.append('user', this.user);
 
-      axios.post("http://127.0.0.1:8000/api/task/", fd, {
+      axios.post(`${Api}task/`, fd, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Token ${token}`
@@ -124,13 +123,15 @@ export default {
   border: 2px dashed #ccc;
   padding: 20px;
   text-align: center;
-  position: relative;
+  /* position: relative; */
 }
 
 .default-background {
-  background-image: url('/public/images/test.jpg'); /* Add your default image URL */
+  background-image: url('/public/images/drag-drop.png'); /* Add your default image URL */
   background-size: cover;
-  height: 100px; /* Adjust the height as needed */
-  width: 500px;
+  background-position: center center;
+  height:150px; /* Adjust the height as needed */
+  width: 200px;
+  justify-content: center;
 }
 </style>

@@ -19,7 +19,7 @@ import Header from '@/components/Header.vue';
 import Sidebar from '@/components/Sidebar.vue';
 import AppList from '@/components/AppList.vue';
 import axios from 'axios';
-
+const Api='https://backend-app-ygah.onrender.com/api/'
 export default {
   components: {
     Header,
@@ -41,7 +41,7 @@ export default {
   methods: {
     fetchUserDetails() {
       const token = localStorage.getItem('token'); // Retrieve the token from localStorage
-      axios.get('http://127.0.0.1:8000/api/user/', { headers: { Authorization: `Token ${token}` } })
+      axios.get(`${Api}user/`, { headers: { Authorization: `Token ${token}` } })
         .then(response => {
           console.log(response)
           this.username = response.data.username
@@ -54,7 +54,7 @@ export default {
     },
     fetchAppList() {
       const token = localStorage.getItem('token');
-      axios.get('http://127.0.0.1:8000/api/app/', { headers: { Authorization: `Token ${token}` } })
+      axios.get(`${Api}app/`, { headers: { Authorization: `Token ${token}` } })
         .then(response => {
           console.log(response)
           this.apps = response.data;

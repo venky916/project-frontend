@@ -29,7 +29,7 @@
 import Header from '@/components/Header.vue';
 import Sidebar from '@/components/Sidebar.vue';
 import axios from 'axios';
-
+const Api='https://backend-app-ygah.onrender.com/api/'
 export default {
   components: {
     Header,
@@ -44,7 +44,7 @@ export default {
   mounted() {
     const token = localStorage.getItem('token');
     axios
-      .get(`http://127.0.0.1:8000/api/user/points`, {
+      .get(`${Api}user/points`, {
         headers: { Authorization: `Token ${token}` },
       })
       .then(response => {
@@ -56,7 +56,7 @@ export default {
       });
 
     axios
-      .get(`http://127.0.0.1:8000/api/user/apps/`, {
+      .get(`${Api}user/apps/`, {
         headers: { Authorization: `Token ${token}` },
       })
       .then(response => {

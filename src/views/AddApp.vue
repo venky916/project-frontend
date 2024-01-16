@@ -65,6 +65,7 @@ export default {
     };
   },
   created() {
+    document.title="Add-App"
     this.fetchUserDetails();
   },
   methods: {
@@ -84,6 +85,12 @@ export default {
       this.selectedFileName = this.selectfile.name;
       this.previewImage = URL.createObjectURL(this.selectfile);
       event.target.style.backgroundImage = 'none';
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.selectfilePreview = e.target.result;
+      };
+
+      reader.readAsDataURL(this.selectfile);
     },
     submitForm() {
       const token = localStorage.getItem('token');

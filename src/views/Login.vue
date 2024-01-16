@@ -30,6 +30,9 @@ export default {
       password: '',
     };
   },
+  created(){
+    document.title="Login"
+  },
   methods: {
     login() {
       // Use Axios to perform login request with Knox token authentication

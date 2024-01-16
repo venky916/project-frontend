@@ -1,16 +1,22 @@
 <!-- src/components/Sidebar.vue -->
 <template>
   <div class="sidebar">
-    <router-link to="/home" class="route" :class="{ selected: currentRoute === '/home' }">Home</router-link>
+    <router-link to="/home" class="route" :class="{ selected: currentRoute === '/home' }">
+      <i class="fas fa-home"></i> Home</router-link>
     <div v-if="!is_admin">
-    <router-link to="/profile" class="route" :class="{ selected: currentRoute === '/profile' }">Profile</router-link>
-    <router-link to="/points" class="route" :class="{ selected: currentRoute === '/points' }">Points</router-link>
-    <router-link to="/tasks" class="route" :class="{ selected: currentRoute === '/tasks' }">Tasks</router-link>
+    <router-link to="/profile" class="route" :class="{ selected: currentRoute === '/profile' }">
+      <i class="fas fa-user"></i> Profile</router-link>
+    <router-link to="/points" class="route" :class="{ selected: currentRoute === '/points' }">
+      <i class="fas fa-star"></i> Points</router-link>
+    <router-link to="/tasks" class="route" :class="{ selected: currentRoute === '/tasks' }">
+      <i class="fas fa-tasks"></i> Tasks</router-link>
     </div>
     <div v-else>
-      <router-link to="/add-app" class="route" :class="{ selected: currentRoute === '/add-app' }">AddApp</router-link>
+      <router-link to="/add-app" class="route" :class="{ selected: currentRoute === '/add-app' }">
+        <i class="fas fa-plus"></i> AddApp</router-link>
     </div>
-    <button @click="logout" class="logout" :class="{ selected: isLogoutSelected }">Logout</button>
+    <button @click="logout" class="logout" :class="{ selected: isLogoutSelected }">
+      <i class="fas fa-sign-out-alt"></i> Logout</button>
   </div>
 </template>
 

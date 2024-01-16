@@ -35,6 +35,7 @@ export default {
     };
   },
   created() {
+    document.title="Next-Apps"
     this.fetchUserDetails();
     this.fetchAppList();
   },

@@ -37,6 +37,9 @@ export default {
       is_admin: false, // Initialize with a default value
     };
   },
+  created(){
+    document.title="Register"
+  },
   methods: {
     register() {
       // Use Axios to perform registration request with Knox token authentication

@@ -41,6 +41,9 @@ export default {
       userapps: null,
     };
   },
+  created(){
+    document.title='User-Points'
+  },
   mounted() {
     const token = localStorage.getItem('token');
     axios

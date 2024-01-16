@@ -2,23 +2,42 @@
   <div class="main-container">
     <Header :username="username" />
     <div class="flex-container">
-      <Sidebar :is_admin="is_admin"/>
+      <Sidebar :is_admin="is_admin" />
       <div class="app-details-container">
         <h2>App Details</h2>
         <div v-if="app">
           <div class="app-list-container">
-            <img class='image' v-if="app.app_image" :src="app.app_image" alt="App Image" />
+            <img class="image" v-if="app.app_image" :src="app.app_image" alt="App Image" />
             <p>{{ app.app_name }}</p>
             <p>Points: {{ app.points }}</p>
           </div>
           <h3>Upload Screenshot</h3>
           <!-- Simple drag and drop UI -->
-          <div class="upload-area" @dragover.prevent @dragenter.prevent @dragleave.prevent @drop.prevent="handleFileUpload">
+          <div
+            class="upload-area"
+            @dragover.prevent
+            @dragenter.prevent
+            @dragleave.prevent
+            @drop.prevent="handleFileUpload"
+          >
             <div class="default-background">
               <p v-if="!selectedFileName" style="color: aqua;">Drag & Drop Image Here</p>
-              <img v-else :src="selectfilePreview" alt="Preview" style="max-width: 200px; max-height: 200px;" />
+              <img
+                v-else
+                :src="selectfilePreview"
+                alt="Preview"
+                style="max-width: 200px; max-height: 200px;"
+              />
             </div>
             <button class="btn btn-secondary my-3" @click="posting">Submit</button>
+            <div >
+              <!-- Use the modal component -->
+              <message-modal
+                :show-modal="isModalVisible"
+                :message="modalMessage"
+                :close-modal="closeModal"
+              />
+            </div>
           </div>
         </div>
         <div v-else>
@@ -32,12 +51,14 @@
 <script>
 import Header from '@/components/Header.vue';
 import Sidebar from '@/components/Sidebar.vue';
+import MessageModal from '@/components/MessageModal.vue';
 import axios from 'axios';
-const Api='https://backend-app-ygah.onrender.com/api/'
+const Api = 'https://backend-app-ygah.onrender.com/api/';
 export default {
   components: {
     Header,
     Sidebar,
+    MessageModal,
   },
   data() {
     return {
@@ -47,22 +68,25 @@ export default {
       username: '',
       is_admin: '',
       selectedFileName: '',
-      selectfilePreview: '', // Add a property to preview the selected file
+      selectfilePreview: '',
+      isModalVisible: false,
+      modalMessage: '',
     };
   },
   created() {
+    document.title="App-Detail"
     const appId = this.$route.params.id;
     const token = localStorage.getItem('token');
-
-    axios.get(`${Api}app/${appId}`, { headers: { Authorization: `Token ${token}` } })
+    axios
+      .get(`${Api}app/${appId}`, { headers: { Authorization: `Token ${token}` } })
       .then(response => {
         this.app = response.data;
       })
       .catch(error => {
         console.error('Failed to fetch app details', error);
       });
-
-    axios.get(`${Api}user/`, { headers: { Authorization: `Token ${token}` } })
+    axios
+      .get(`${Api}user/`, { headers: { Authorization: `Token ${token}` } })
       .then(response => {
         this.user = response.data.id;
         this.username = response.data.username;
@@ -85,22 +109,34 @@ export default {
       fd.append('image', this.selectfile);
       fd.append('app', this.app.id);
       fd.append('user', this.user);
-
-      axios.post(`${Api}task/`, fd, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Token ${token}`
-        },
-      })
-        .then((res) => {
-          console.log(res);
-          this.info = res.statusText;
+      axios
+        .post(`${Api}task/`, fd, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Token ${token}`,
+          },
         })
-        .catch((err) => console.log(err.response.data));
+        .then(res => {
+          console.log(res);
+          this.showModal('Task Finished!');
+        })
+        .catch(err => {
+          console.log(err.response.data);
+          this.showModal('Error submitting task.');
+        });
     },
-  }
+    showModal(message) {
+      this.isModalVisible = true;
+      this.modalMessage = message;
+    },
+    closeModal() {
+      this.isModalVisible = false;
+      this.$router.push({ path: '/home' });
+    },
+  },
 };
 </script>
+
 <style scoped>
 .main-container {
   display: flex;
@@ -110,10 +146,12 @@ export default {
 .flex-container {
   display: flex;
 }
-.image{
+
+.image {
   height: 100px; /* Adjust the height as needed */
   width: 100px;
 }
+
 .app-details-container {
   flex: 1;
   padding: 15px;
@@ -123,15 +161,51 @@ export default {
   border: 2px dashed #ccc;
   padding: 20px;
   text-align: center;
-  /* position: relative; */
 }
 
 .default-background {
   background-image: url('/public/images/drag-drop.png'); /* Add your default image URL */
   background-size: cover;
   background-position: center center;
-  height:150px; /* Adjust the height as needed */
+  height: 150px; /* Adjust the height as needed */
   width: 200px;
   justify-content: center;
+}
+
+/* Add modal styles */
+.message-modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 </style>

@@ -98,6 +98,9 @@ export default {
       selectedFileName: '',
     };
   },
+  created(){
+    document.title="User-Profile"
+  },
   mounted() {
     this.fetchUserData();
   },
@@ -168,8 +171,10 @@ export default {
           console.error('Failed to update user profile', error);
         });
     },
+
     handleFileUpload(event) {
       event.preventDefault();
+
       this.selectfile = event.dataTransfer.files[0];
       this.selectedFileName = this.selectfile.name;
 

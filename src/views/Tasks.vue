@@ -39,6 +39,9 @@ export default {
       downloadedApps: [], // IDs of downloaded apps
     };
   },
+  created(){
+    document.title="User-Tasks"
+  },
   mounted() {
     const token = localStorage.getItem('token');
 

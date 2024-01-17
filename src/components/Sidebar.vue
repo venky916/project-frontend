@@ -1,7 +1,7 @@
 <!-- src/components/Sidebar.vue -->
 <template>
   <div class="sidebar">
-    <router-link to="/home" class="route" :class="{ selected: currentRoute === '/home' }">
+    <router-link to="/home" class="route" :class="{ selected: isHomeSelected }">
       <i class="fas fa-home"></i> Home</router-link>
     <div v-if="!is_admin">
     <router-link to="/profile" class="route" :class="{ selected: currentRoute === '/profile' }">
@@ -33,6 +33,10 @@ export default {
     currentRoute() {
       return this.$route.path;
     },
+    isHomeSelected() {
+      // Check if the current route is either '/home' or starts with '/app-details'
+      return this.$route.path === "/home" || this.$route.path.startsWith("/app");
+    },
   },
   // watch: {
   //   '$route.path': 'updateCurrentRoute',
@@ -41,8 +45,6 @@ export default {
     updateCurrentRoute(newRoute) {
       this.currentRoute = newRoute;
     },
-  },
-  methods: {
     logout() {
       // Toggle the selected class when the button is clicked
       this.isLogoutSelected = !this.isLogoutSelected;
@@ -50,10 +52,10 @@ export default {
       localStorage.removeItem('token');
       this.$router.push('/login');
     },
+  }, 
     created(){
       console.log('sidebar',this.is_admin)
     }
-  },
 };
 </script>
 

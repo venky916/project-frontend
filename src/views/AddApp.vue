@@ -37,6 +37,14 @@
         </div>
         <button type="submit">Submit</button>
       </form>
+      <div>
+          <!-- Use the modal component -->
+          <message-modal
+                :show-modal="isModalVisible"
+                :message="modalMessage"
+                :close-modal="closeModal"
+          />
+            </div>
     </div>
   </div>
   <div v-else>loading...</div>
@@ -45,12 +53,14 @@
 <script>
 import Header from '@/components/Header.vue';
 import Sidebar from '@/components/Sidebar.vue';
+import MessageModal from '@/components/MessageModal.vue';
 import axios from 'axios';
 const Api='https://backend-app-ygah.onrender.com/api/'
 export default {
   components: {
     Header,
     Sidebar,
+    MessageModal,
   },
   data() {
     return {
@@ -62,6 +72,8 @@ export default {
       selectfile: null,
       selectedFileName: '',
       previewImage: '',
+      isModalVisible: false,
+      modalMessage: '',
     };
   },
   created() {
@@ -112,12 +124,24 @@ export default {
         .then(response => {
           console.log('Success:', response.data);
           // Handle success as needed
+          this.showModal('App Added!');
         })
         .catch(error => {
           console.error('Error:', error);
           // Handle error as needed
+          this.showModal('Error submitting App.');
         });
     },
+    showModal(message) {
+      this.isModalVisible = true;
+      this.modalMessage = message;
+    },
+    closeModal() {
+      this.isModalVisible = false;
+      if (this.modalMessage==='App Added!'){
+        this.$router.push({ path: '/home' });
+      }
+    }
   },
 };
 </script>

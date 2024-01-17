@@ -30,7 +30,7 @@
               />
             </div>
             <button class="btn btn-secondary my-3" @click="posting">Submit</button>
-            <div >
+            <div>
               <!-- Use the modal component -->
               <message-modal
                 :show-modal="isModalVisible"
@@ -41,7 +41,10 @@
           </div>
         </div>
         <div v-else>
-          Loading... <!-- Add a loading indicator or message as needed -->
+          <div v-if="status===404"><h1 id="notfound">404-App Not Found</h1></div>
+          <div v-else>
+            Loading... <!-- Add a loading indicator or message as needed -->
+          </div>
         </div>
       </div>
     </div>
@@ -63,6 +66,7 @@ export default {
   data() {
     return {
       app: null,
+      status:null,
       selectfile: null,
       user: '',
       username: '',
@@ -74,15 +78,17 @@ export default {
     };
   },
   created() {
-    document.title="App-Detail"
+    document.title = "App-Detail"
     const appId = this.$route.params.id;
     const token = localStorage.getItem('token');
     axios
       .get(`${Api}app/${appId}`, { headers: { Authorization: `Token ${token}` } })
       .then(response => {
         this.app = response.data;
+        this.status=response.status
       })
       .catch(error => {
+        this.status=error.response.status
         console.error('Failed to fetch app details', error);
       });
     axios
@@ -131,9 +137,11 @@ export default {
     },
     closeModal() {
       this.isModalVisible = false;
-      this.$router.push({ path: '/home' });
-    },
-  },
+      if (this.modalMessage==='Task Finished!'){
+        this.$router.push({ path: '/home' });
+      }
+    }
+  }
 };
 </script>
 
@@ -172,40 +180,4 @@ export default {
   justify-content: center;
 }
 
-/* Add modal styles */
-.message-modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.4);
-}
-
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-}
-
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
 </style>
